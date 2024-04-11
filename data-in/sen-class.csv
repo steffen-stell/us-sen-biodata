@@ -1,0 +1,101 @@
+class,name,name_last,name_first,party,state
+1,"Baldwin, Tammy",Baldwin,Tammy,D,WI
+1,"Brown, Sherrod",Brown,Sherrod,D,OH
+1,"Butler, Laphonza R.",Butler,Laphonza R.,D,CA
+1,"Cantwell, Maria",Cantwell,Maria,D,WA
+1,"Cardin, Benjamin L.",Cardin,Benjamin L.,D,MD
+1,"Carper, Thomas R.",Carper,Thomas R.,D,DE
+1,"Casey, Robert P., Jr.",Casey,"Robert P., Jr.",D,PA
+1,"Gillibrand, Kirsten E.",Gillibrand,Kirsten E.,D,NY
+1,"Heinrich, Martin",Heinrich,Martin,D,NM
+1,"Hirono, Mazie K.",Hirono,Mazie K.,D,HI
+1,"Kaine, Tim",Kaine,Tim,D,VA
+1,"Klobuchar, Amy",Klobuchar,Amy,D,MN
+1,"Manchin, Joe, III",Manchin,"Joe, III",D,WV
+1,"Menendez, Robert",Menendez,Robert,D,NJ
+1,"Murphy, Christopher",Murphy,Christopher,D,CT
+1,"Rosen, Jacky",Rosen,Jacky,D,NV
+1,"Stabenow, Debbie",Stabenow,Debbie,D,MI
+1,"Tester, Jon",Tester,Jon,D,MT
+1,"Warren, Elizabeth",Warren,Elizabeth,D,MA
+1,"Whitehouse, Sheldon",Whitehouse,Sheldon,D,RI
+1,"Barrasso, John",Barrasso,John,R,WY
+1,"Blackburn, Marsha",Blackburn,Marsha,R,TN
+1,"Braun, Mike",Braun,Mike,R,IN
+1,"Cramer, Kevin",Cramer,Kevin,R,ND
+1,"Cruz, Ted",Cruz,Ted,R,TX
+1,"Fischer, Deb",Fischer,Deb,R,NE
+1,"Hawley, Josh",Hawley,Josh,R,MO
+1,"Romney, Mitt",Romney,Mitt,R,UT
+1,"Scott, Rick",Scott,Rick,R,FL
+1,"Wicker, Roger F.",Wicker,Roger F.,R,MS
+1,"King, Angus S., Jr.",King,"Angus S., Jr.",I,ME
+1,"Sanders, Bernard",Sanders,Bernard,I,VT
+1,"Sinema, Kyrsten",Sinema,Kyrsten,I,AZ
+2,"Booker, Cory A.",Booker,Cory A.,D,NJ
+2,"Coons, Christopher A.",Coons,Christopher A.,D,DE
+2,"Durbin, Richard J.",Durbin,Richard J.,D,IL
+2,"Hickenlooper, John W.",Hickenlooper,John W.,D,CO
+2,"Luján, Ben Ray",Luján,Ben Ray,D,NM
+2,"Markey, Edward J.",Markey,Edward J.,D,MA
+2,"Merkley, Jeff",Merkley,Jeff,D,OR
+2,"Ossoff, Jon",Ossoff,Jon,D,GA
+2,"Peters, Gary C.",Peters,Gary C.,D,MI
+2,"Reed, Jack",Reed,Jack,D,RI
+2,"Shaheen, Jeanne",Shaheen,Jeanne,D,NH
+2,"Smith, Tina",Smith,Tina,D,MN
+2,"Warner, Mark R.",Warner,Mark R.,D,VA
+2,"Capito, Shelley Moore",Capito,Shelley Moore,R,WV
+2,"Cassidy, Bill",Cassidy,Bill,R,LA
+2,"Collins, Susan M.",Collins,Susan M.,R,ME
+2,"Cornyn, John",Cornyn,John,R,TX
+2,"Cotton, Tom",Cotton,Tom,R,AR
+2,"Daines, Steve",Daines,Steve,R,MT
+2,"Ernst, Joni",Ernst,Joni,R,IA
+2,"Graham, Lindsey",Graham,Lindsey,R,SC
+2,"Hagerty, Bill",Hagerty,Bill,R,TN
+2,"Hyde-Smith, Cindy",Hyde-Smith,Cindy,R,MS
+2,"Lummis, Cynthia M.",Lummis,Cynthia M.,R,WY
+2,"Marshall, Roger",Marshall,Roger,R,KS
+2,"McConnell, Mitch",McConnell,Mitch,R,KY
+2,"Mullin, Markwayne",Mullin,Markwayne,R,OK
+2,"Ricketts, Pete",Ricketts,Pete,R,NE
+2,"Risch, James E.",Risch,James E.,R,ID
+2,"Rounds, Mike",Rounds,Mike,R,SD
+2,"Sullivan, Dan",Sullivan,Dan,R,AK
+2,"Tillis, Thom",Tillis,Thom,R,NC
+2,"Tuberville, Tommy",Tuberville,Tommy,R,AL
+3,"Bennet, Michael F.",Bennet,Michael F.,D,CO
+3,"Blumenthal, Richard",Blumenthal,Richard,D,CT
+3,"Cortez Masto, Catherine",Cortez Masto,Catherine,D,NV
+3,"Duckworth, Tammy",Duckworth,Tammy,D,IL
+3,"Fetterman, John",Fetterman,John,D,PA
+3,"Hassan, Margaret Wood",Hassan,Margaret Wood,D,NH
+3,"Kelly, Mark",Kelly,Mark,D,AZ
+3,"Murray, Patty",Murray,Patty,D,WA
+3,"Padilla, Alex",Padilla,Alex,D,CA
+3,"Schatz, Brian",Schatz,Brian,D,HI
+3,"Schumer, Charles E.",Schumer,Charles E.,D,NY
+3,"Van Hollen, Chris",Van Hollen,Chris,D,MD
+3,"Warnock, Raphael G.",Warnock,Raphael G.,D,GA
+3,"Welch, Peter",Welch,Peter,D,VT
+3,"Wyden, Ron",Wyden,Ron,D,OR
+3,"Boozman, John",Boozman,John,R,AR
+3,"Britt, Katie Boyd",Britt,Katie Boyd,R,AL
+3,"Budd, Ted",Budd,Ted,R,NC
+3,"Crapo, Mike",Crapo,Mike,R,ID
+3,"Grassley, Chuck",Grassley,Chuck,R,IA
+3,"Hoeven, John",Hoeven,John,R,ND
+3,"Johnson, Ron",Johnson,Ron,R,WI
+3,"Kennedy, John",Kennedy,John,R,LA
+3,"Lankford, James",Lankford,James,R,OK
+3,"Lee, Mike",Lee,Mike,R,UT
+3,"Moran, Jerry",Moran,Jerry,R,KS
+3,"Murkowski, Lisa",Murkowski,Lisa,R,AK
+3,"Paul, Rand",Paul,Rand,R,KY
+3,"Rubio, Marco",Rubio,Marco,R,FL
+3,"Schmitt, Eric",Schmitt,Eric,R,MO
+3,"Scott, Tim",Scott,Tim,R,SC
+3,"Thune, John",Thune,John,R,SD
+3,"Vance, J.D.",Vance,J.D.,R,OH
+3,"Young, Todd",Young,Todd,R,IN

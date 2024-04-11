@@ -162,7 +162,10 @@ servicePeriods_imputed <- servicePeriods |>
       T ~ job_end
     )
   ) |>
-  ungroup()
+  ungroup() |>
+  inner_join(
+    x = select(senator, usCongressBioId, familyName)
+  )
 
 # Points where more than 2 service periods overlap in a state
 servicePeriods_imputed |>
@@ -172,10 +175,10 @@ servicePeriods_imputed |>
   group_by(represents) |>
   mutate(concurrent = cumsum((type == "job_start") - (type == "job_end"))) |>
   filter(
-    date > as.Date("1914-01-01"),
+    #date > as.Date("1914-01-01"),
     concurrent > 2
     ) |>
-  select(-type, state = represents)
+  select(-type, state = represents) |> View()
 
 # check that state
 servicePeriods_imputed |>
@@ -186,8 +189,80 @@ servicePeriods_imputed |>
   View()
 
 
+# Class -------------------------------------------------------------------
+d_state_abbr <- read_csv(
+  "data-in/state-abbreviations.csv",
+  col_names = c("state_name", "state_code")
+  )
 
+# d_class <- read_csv("data-in/senate-classes.csv") |>
+#   select(1:4) |>
+#   pivot_longer(2:4, names_to = "class", values_to = "name") |>
+#   filter(name != "—") |>
+#   mutate(
+#     party = str_extract(name, "(?<=\\()\\w+(?=\\))"),
+#     name = str_remove(name, " \\(\\w+\\)"),
+#     class = class |>
+#       str_extract("\\d") |>
+#       as.integer()
+#   ) |>
+#   inner_join(d_state_abbr, c("State" = "state_name"))
 
+d_sen_class <- read_rds("data-in/d_sen_class.rds")
+
+serviceWithClass <- servicePeriods_imputed |>
+  filter(job_start <= ymd("2024-04-11"), job_end >= ymd("2024-04-11")) |>
+  inner_join(
+    y = select(d_sen_class, state, name_last, class),
+    by = c("represents" = "state", "familyName" = "name_last")
+  ) |>
+  full_join(servicePeriods_imputed) |>
+  select(-consecutive) |>
+  relocate(class, .after = "represents")
+
+#' @title Infer senator class from successors
+#' inputs must be sorted by `job_end`. Only for single state, use grouping for all
+#' @details Senator class can be inferred from adjacent tenures, as long as there are no double vacancies. This function infers only on basis of successors.
+infer_sen_class <- \(class, job_start, job_end) {
+  d <- tibble(class, job_start, job_end)
+
+  occupied <- d |>
+    filter(!is.na(class)) |>
+    slice(1:2)
+
+  for (i in seq_along(d$class)) {
+    if (!is.na(d[i, "class"])) {
+      occupied[occupied$class == d$class[i], "job_start"] <- d$job_start[i];
+      next;
+    }
+
+    potential <- occupied |>
+      filter(!d$job_end[i] > job_start)
+
+    if (nrow(potential) == 0) {
+      stop("More than 2 concurrent senators");
+    } else if (nrow(potential) == 2) {
+      warning("Double vacancy, class values will be NA prior to double vacancies");
+      break;
+    }
+
+    d[i, "class"] <- potential[["class"]]
+    occupied[occupied$class == potential[["class"]], "job_start"] <- d[i, "job_start"]
+  }
+  return(d$class)
+}
+
+class_imputed <- serviceWithClass |>
+  arrange(represents, desc(job_end)) |>
+  group_by(represents) |>
+  filter(job_end > ymd("1914-01-01")) |>
+  mutate(class = infer_sen_class(class, job_start, job_end))
+
+class_imputed |>
+  ungroup() |>
+  count(is.na(class))
+
+# To do: find class data for double vacancies
 
 # -------------------------------------------------------------------------
 
