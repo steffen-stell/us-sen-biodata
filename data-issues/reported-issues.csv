@@ -1,0 +1,13 @@
+issue,report_date,fixed
+"Lloyd Murphy (M001092) is recorded to have served out his term to 1971-01-03, whereas his successor John Tunney (T000410) is recorded to have begun his term on 1971-01-02. Both cannot be true. The biographical text of Mr. Tunney mentions that he was appointed ""to fill the vacancy caused by the resignation of George Murphy for the term ending January 3, 1971"".",2024-03-06,T
+"Charles Gossett (G000337) is recorded to have served out his term to 1947-03-01, whereas his successor Henry Dworshak (D000585) is recorded to have begun his term on 1946-11-06. Both cannot be true.",2024-03-06,T
+"William B. McKinley (M000521) is recorded to have died in office on 1926-12-07. His successor Frank L. Smith (S000534), though never seated, is recorded to have begun his term on 1926-12-06, one day before the death.",2024-03-06,T
+"Frank Carlson (C000154) is recorded to have begun service on 1950-11-27, whereas his predecessor Harry Darby (D000048) is recorded to have served until 1950-11-28, one day later. The accompanying text for Sen. Carlson actually states his service as starting on 1950-11-29, which would not be overlapping.",2024-03-06,T
+"Al Franken (F000457) is recorded to have resigned on 2018-02-02, the actual date is 2018-01-02. [1]",2024-03-06,T
+"Cordell Hull (H000940) is recorded to have resigned on 1933-03-03, whereas his successor Nathan L. Bachman (B000010) is recorded to have begun his term on 1933-02-28. Both cannot be true. ",2024-03-06,T
+The congress_endDate is missing for all observations in the 116th Congress.,2024-04-10,F
+For Strom Thurmond (T000254) the start (1954-12-24) and end date (1956-04-04) for his first tenure are not recorded.,2024-04-10,T
+For Wallace Bennett (B000384) the date of his resignation (1974-12-20) is not recorded.,2024-04-10,T
+For Warren R. Austin (A000342) the early departure date (1946-08-02) is not recorded.,2024-04-10,T
+For Ralph T. Smith (S000602) the early departure date (1970-11-16) is not recorded.,2024-04-10,T
+For Thomas A. Burke (B001099) the early departure date (1954-12-02) is not recorded. ,2024-04-10,T

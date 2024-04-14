@@ -4,6 +4,7 @@
 library(tidyverse)
 library(jsonlite)
 library(lubridate)
+library(fuzzyjoin)
 
 json <- "data-in/BioguideProfiles" |>
   list.files(full.names = T) |>
@@ -50,7 +51,12 @@ senatorCongress <-
   #filter(congressNumber >= 64) |>
   mutate(
     across(ends_with("Date"), as.Date),
-  )
+  ) |>
+  arrange(
+    usCongressBioId,
+    congressNumber,
+    ifelse(is.na(job_startDate), job_endDate, job_startDate)
+    )
 
 congress <- senatorCongress |>
   select(congressNumber, congress_startDate, congress_endDate) |>
@@ -67,26 +73,26 @@ congress <- senatorCongress |>
 senatorCongress <- senatorCongress |>
   ungroup() |>
   select(-starts_with("congress_")) |>
-  arrange(usCongressBioId, congressNumber) |>
+  arrange(usCongressBioId, congressNumber) #|>
   # Manual imputation
-  mutate(
-    job_startDate = case_when(
-      usCongressBioId == "T000254" & congressNumber == 83 ~ as.Date("1954-12-24"), # Strom Thurmond (SC)
-      T ~ job_startDate
-    ),
-    job_endDate = case_when(
-      usCongressBioId == "T000254" & congressNumber == 83 ~ as.Date("1956-04-04"), # Strom Thurmond (SC)
-      usCongressBioId == "B000384" & congressNumber == 93 ~ as.Date("1974-12-20"), # Wallace BENNETT (UT)
-      usCongressBioId == "A000342" & congressNumber == 79 ~ as.Date("1946-08-02"), # Warren R. Austin (VT)
-      T ~ job_endDate
-    ),
-    job_departureReason = case_when(
-      usCongressBioId == "T000254" & congressNumber == 83 ~ "Resigned", # Strom Thurmond (SC)
-      usCongressBioId == "B000384" & congressNumber == 93 ~ "Resigned", # Wallace BENNETT (UT)
-      usCongressBioId == "A000342" & congressNumber == 79 ~ "Resigned", # Warren R. Austion (VT)
-      T ~ job_departureReason
-    )
-  )
+  # mutate(
+  #   job_startDate = case_when(
+  #     usCongressBioId == "T000254" & congressNumber == 83 ~ as.Date("1954-12-24"), # Strom Thurmond (SC)
+  #     T ~ job_startDate
+  #   ),
+  #   job_endDate = case_when(
+  #     usCongressBioId == "T000254" & congressNumber == 83 ~ as.Date("1956-04-04"), # Strom Thurmond (SC)
+  #     usCongressBioId == "B000384" & congressNumber == 93 ~ as.Date("1974-12-20"), # Wallace BENNETT (UT)
+  #     usCongressBioId == "A000342" & congressNumber == 79 ~ as.Date("1946-08-02"), # Warren R. Austin (VT)
+  #     T ~ job_endDate
+  #   ),
+  #   job_departureReason = case_when(
+  #     usCongressBioId == "T000254" & congressNumber == 83 ~ "Resigned", # Strom Thurmond (SC)
+  #     usCongressBioId == "B000384" & congressNumber == 93 ~ "Resigned", # Wallace BENNETT (UT)
+  #     usCongressBioId == "A000342" & congressNumber == 79 ~ "Resigned", # Warren R. Austion (VT)
+  #     T ~ job_departureReason
+  #   )
+  # )
 
 senatorCongress |>
   filter(usCongressBioId == "B000384")
@@ -156,9 +162,9 @@ servicePeriods_imputed <- servicePeriods |>
     job_end = case_when(
       #usCongressBioId == "M001092" ~ as.Date("1971-01-02"), # Lloyd Murphy (corrected after report)
       #usCongressBioId == "G000337" ~ as.Date("1946-11-06"), # Charles Gosset (corrected after report)
-      usCongressBioId == "S000602" ~ as.Date("1970-11-16"), # Ralph Smith
+      # usCongressBioId == "S000602" ~ as.Date("1970-11-16"), # Ralph Smith
       #usCongressBioId == "F000457" ~ as.Date("2018-01-02"), # Al Franken (corrected after report)
-      usCongressBioId == "B001099" ~ as.Date("1954-12-02"), # Thomas Burke (OH)
+      # usCongressBioId == "B001099" ~ as.Date("1954-12-02"), # Thomas Burke (OH)
       T ~ job_end
     )
   ) |>
@@ -168,46 +174,29 @@ servicePeriods_imputed <- servicePeriods |>
   )
 
 # Points where more than 2 service periods overlap in a state
-servicePeriods_imputed |>
+concurent3plus <- servicePeriods_imputed |>
   select(represents, job_start, job_end) |>
   pivot_longer(job_start:job_end, names_to = "type", values_to = "date") |>
   arrange(represents, date, type) |>
   group_by(represents) |>
   mutate(concurrent = cumsum((type == "job_start") - (type == "job_end"))) |>
   filter(
-    #date > as.Date("1914-01-01"),
+    # date > as.Date("1914-01-01"),
     concurrent > 2
     ) |>
-  select(-type, state = represents) |> View()
+  select(-type, state = represents)
 
-# check that state
-servicePeriods_imputed |>
-  arrange(represents, job_start) |>
-  filter(represents == "OR") |>
-  inner_join(select(senator, usCongressBioId, familyName), y = _) |>
-  arrange(job_start) |>
-  View()
 
+concurent3plus |>
+  fuzzy_left_join(
+    y = servicePeriods_imputed,
+    by = c(date = "job_start", date = "job_end", state = "represents"),
+    match_fun = c(`>=`, `<=`, `==`)
+    ) |>
+  select(-congress_start, -congress_end, -first_in_office, -last_in_office, -consecutive, -represents) |>
+  write_csv("data-issues/more-than-2-concurrent-senators.csv")
 
 # Class -------------------------------------------------------------------
-d_state_abbr <- read_csv(
-  "data-in/state-abbreviations.csv",
-  col_names = c("state_name", "state_code")
-  )
-
-# d_class <- read_csv("data-in/senate-classes.csv") |>
-#   select(1:4) |>
-#   pivot_longer(2:4, names_to = "class", values_to = "name") |>
-#   filter(name != "—") |>
-#   mutate(
-#     party = str_extract(name, "(?<=\\()\\w+(?=\\))"),
-#     name = str_remove(name, " \\(\\w+\\)"),
-#     class = class |>
-#       str_extract("\\d") |>
-#       as.integer()
-#   ) |>
-#   inner_join(d_state_abbr, c("State" = "state_name"))
-
 d_sen_class <- read_rds("data-in/d_sen_class.rds")
 
 serviceWithClass <- servicePeriods_imputed |>
@@ -264,27 +253,7 @@ class_imputed |>
 
 # To do: find class data for double vacancies
 
-# -------------------------------------------------------------------------
-
-d <- servicePeriods_imputed |>
-  select(usCongressBioId, represents, job_start, job_end) |>
-  mutate(
-    .keep = "unused",
-    period = job_start %--% (job_end - days(1))
-    ) |>
-  arrange(represents, period)
-
-x <- d$period |>
-  head()
-
-int_overlaps(x[4], x[5])
-
-servicePeriods_imputed |>
-  select(usCongressBioId, represents, job_start, job_end) |>
-  arrange(represents, job_start)
-
-
-
+# Double Vacancies -------------------------------------------------------
 servicePeriods_imputed |>
   select(represents, job_start, job_end) |>
   mutate_at("job_end", `-`, 1) |>
@@ -298,6 +267,9 @@ servicePeriods_imputed |>
   ) |>
   select(-type, state = represents) |>
   filter(date != ymd("2025-01-02"))
+
+class_imputed |>
+  filter(represents == "OR") |> View()
 
 
 
